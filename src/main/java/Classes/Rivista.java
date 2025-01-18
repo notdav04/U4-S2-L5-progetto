@@ -15,6 +15,10 @@ public class Rivista extends Elemento {
         return periodicita;
     }
 
+    public void setPeriodicita(Periodicita periodicita) {
+        this.periodicita = periodicita;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "Rivista{" +

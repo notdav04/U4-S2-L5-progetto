@@ -20,6 +20,14 @@ public class Libro extends Elemento{
         return genere;
     }
 
+    public void setAutore(String autore) {
+        this.autore = autore;
+    }
+
+    public void setGenere(String genere) {
+        this.genere = genere;
+    }
+
     @Override
     public String toString() {
         return super.toString() + "Libro{" +

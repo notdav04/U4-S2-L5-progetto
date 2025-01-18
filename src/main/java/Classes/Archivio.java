@@ -5,19 +5,32 @@ import java.util.stream.Collectors;
 public class Archivio {
     Scanner sn = new Scanner(System.in);
     private HashSet<String> isbnSet;
-    private HashMap<String, Elemento> archivio;
+
     private List<Elemento> listaElementi= new ArrayList<>();
+
+
+    Libro l1 = new Libro("128-129", "libro 1", 2004, 390, "io", "fantasy");
+    Libro l2 = new Libro("129-130", "libro 2", 2006, 400, "io", "romantico");
+    Libro l3 = new Libro("130-131", "libro 3", 2008, 350, "io", "comico");
+    Rivista r1 = new Rivista("131-132", "rivista 1", 2010, 250, Rivista.Periodicita.SETTIMANALE);
+    Rivista r2 = new Rivista("132-133", "rivista 2", 2012, 250, Rivista.Periodicita.SEMESTRALE);
+
 
     public Archivio(){
         isbnSet = new HashSet<>();
-        archivio = new HashMap<>();
+        listaElementi.add(l1);
+        listaElementi.add(l2);
+        listaElementi.add(l3);
+        listaElementi.add(r1);
+        listaElementi.add(r2);
+
     }
 
     public void aggiuntaElemento(){
         System.out.println("inserisci il codice isbn:");
         String isbn = sn.nextLine();
         if (isbnSet.contains(isbn)){
-            System.out.println("Errore, nell archiovio è gia presente un elemento con questo codice isbn.");
+            System.out.println("Errore, nell archivio è gia presente un elemento con questo codice isbn.");
             return;
         }
         System.out.println("Inserisci il titolo:");
@@ -43,7 +56,7 @@ public class Archivio {
 
             Libro nuovoLibro = new Libro(isbn, title, year, pages, autore, genere);
             isbnSet.add(isbn);
-            archivio.put(isbn, nuovoLibro);
+
             listaElementi.add(nuovoLibro);
             System.out.println("Libro aggiunto correttamente.");
 
@@ -61,7 +74,7 @@ public class Archivio {
 
             Rivista nuovaRivista = new Rivista(isbn, title, year, pages, periodicita);
             isbnSet.add(isbn);
-            archivio.put(isbn, nuovaRivista);
+
             listaElementi.add(nuovaRivista);
             System.out.println("Rivista aggiunta correttamente.");
 
@@ -97,6 +110,59 @@ public class Archivio {
         List<Elemento> listaAutori = listaElementi.stream().filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore)).collect(Collectors.toList());
         listaAutori.forEach(ele-> System.out.println(ele));
     }
+    
+    public void aggiornaElemento(){
+        System.out.println("inserisci il codice ISBN dell elemento da modificare: ");
+        String codice = sn.nextLine();
+        Elemento elemento = listaElementi.stream().filter(ele-> ele.getIsbn().equals(codice)).findFirst().get();
+        System.out.println("risultati------------------------------------------");
+        System.out.println(elemento);
+        System.out.println("inserisci il nuovo titolo: ");
+        String title = sn.nextLine();
+        System.out.println("inserisci il nuovo anno di pubblicazione: ");
+        int year = sn.nextInt();
+        sn.nextLine();
+        System.out.println("inserisci il nuovo numero di pagine: ");
+        int pages = sn.nextInt();
+        sn.nextLine();
+        if (elemento instanceof Libro){
+            System.out.println("inserisci il nuovo autore: ");
+            String autore = sn.nextLine();
+            System.out.println("inserisci il nuovo genere: ");
+            String genere = sn.nextLine();
+            elemento.setTitle(title);
+            elemento.setYear(year);
+            elemento.setPages(pages);
+            ((Libro) elemento).setAutore(autore);
+            ((Libro) elemento).setGenere(genere);
+            System.out.println("modifica effettuata correttamente: " + elemento);
+
+        }else if(elemento instanceof Rivista){
+            System.out.println("inserisci la nuova periodicita(settimanale, mensile, semestrale):");
+            String periodicita = sn.nextLine().toUpperCase();
+
+            Rivista.Periodicita nuovaPeriodicita;
+            try{
+                nuovaPeriodicita = Rivista.Periodicita.valueOf(periodicita);
+            }catch(IllegalArgumentException e){
+                System.out.println("errore: valore non accettato");
+                return;
+            }
+
+            elemento.setTitle(title);
+            elemento.setYear(year);
+            elemento.setPages(pages);
+            ((Rivista) elemento).setPeriodicita(nuovaPeriodicita);
+            System.out.println("modifica effettuata correttamente: " + elemento);
+
+
+
+        }
+
+
+    }
+
+
 }
 
 
