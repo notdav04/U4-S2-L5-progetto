@@ -1,10 +1,12 @@
 package org.example;
-import Classes.*;
-import java.util.Scanner;
-public class Main
-{
 
-    public static void main( String[] args ) {
+import Classes.*;
+
+import java.util.Scanner;
+
+public class Main {
+
+    public static void main(String[] args) {
         Scanner sn = new Scanner(System.in);
         Archivio a1 = new Archivio();
         boolean running = true;
@@ -28,7 +30,11 @@ public class Main
                         a1.aggiuntaElemento();
                         break;
                     case 2:
-                        a1.ricercaIsbn();
+                        try {
+                            a1.ricercaIsbn();
+                        }catch (IsbnNotFoundException e){
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     case 3:
                         a1.eliminaIsbn();
@@ -40,11 +46,12 @@ public class Main
                         a1.ricercaAutore();
                         break;
                     case 6:
-                        System.out.println("ancora da implementare.");
+
                         a1.aggiornaElemento();
                         break;
                     case 7:
-                        System.out.println("ancora da implementare");
+
+                        a1.statistiche();
                         break;
                     case 0:
                         System.out.println("Chiusura del programma. Arrivederci!");

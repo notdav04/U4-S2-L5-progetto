@@ -48,11 +48,11 @@ public Elemento(String isbn, String title, int year, int pages){
 
     @Override
     public String toString() {
-        return super.toString() +  "Elemento{" +
+        return   "Elemento{" +
                 "isbn='" + isbn + '\'' +
                 ", title='" + title + '\'' +
                 ", year=" + year +
-                ", pages=" + pages +
-                '}';
+                ", pages=" + pages
+                ;
     }
 }

@@ -30,9 +30,9 @@ public class Libro extends Elemento{
 
     @Override
     public String toString() {
-        return super.toString() + "Libro{" +
+        return super.toString() + " Libro{" +
                 "autore='" + autore + '\'' +
                 ", genere='" + genere + '\'' +
-                '}';
+                "}}";
     }
 }

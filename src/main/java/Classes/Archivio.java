@@ -1,4 +1,5 @@
 package Classes;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -6,7 +7,7 @@ public class Archivio {
     Scanner sn = new Scanner(System.in);
     private HashSet<String> isbnSet;
 
-    private List<Elemento> listaElementi= new ArrayList<>();
+    private List<Elemento> listaElementi = new ArrayList<>();
 
 
     Libro l1 = new Libro("128-129", "libro 1", 2004, 390, "io", "fantasy");
@@ -16,7 +17,7 @@ public class Archivio {
     Rivista r2 = new Rivista("132-133", "rivista 2", 2012, 250, Rivista.Periodicita.SEMESTRALE);
 
 
-    public Archivio(){
+    public Archivio() {
         isbnSet = new HashSet<>();
         listaElementi.add(l1);
         listaElementi.add(l2);
@@ -26,10 +27,10 @@ public class Archivio {
 
     }
 
-    public void aggiuntaElemento(){
+    public void aggiuntaElemento() {
         System.out.println("inserisci il codice isbn:");
         String isbn = sn.nextLine();
-        if (isbnSet.contains(isbn)){
+        if (isbnSet.contains(isbn)) {
             System.out.println("Errore, nell archivio è gia presente un elemento con questo codice isbn.");
             return;
         }
@@ -47,7 +48,7 @@ public class Archivio {
         int scelta = sn.nextInt();
         sn.nextLine();
 
-        if (scelta == 1){
+        if (scelta == 1) {
             System.out.println("Inserisci l'autore:");
             String autore = sn.nextLine();
 
@@ -60,7 +61,7 @@ public class Archivio {
             listaElementi.add(nuovoLibro);
             System.out.println("Libro aggiunto correttamente.");
 
-        }else if(scelta == 2){
+        } else if (scelta == 2) {
             System.out.println("Inserisci la periodicità (SETTIMANALE, MENSILE, SEMESTRALE):");
             String periodicitaInput = sn.nextLine().toUpperCase();
 
@@ -78,43 +79,52 @@ public class Archivio {
             listaElementi.add(nuovaRivista);
             System.out.println("Rivista aggiunta correttamente.");
 
-        }else {
+        } else {
             System.out.println("scelta non valida.");
         }
     }
-    public void ricercaIsbn(){
+
+    public void ricercaIsbn() throws IsbnNotFoundException {
         System.out.println("Inserisci il codice isbn da cercare nell archivio:");
         String codice = sn.nextLine();
-        List<Elemento> listaIsbm = listaElementi.stream().filter(ele->ele.getIsbn().equals(codice)).toList();
-        listaIsbm.forEach(ele-> System.out.println(ele));
+
+        Elemento eleIsbn = listaElementi.stream().filter(ele -> ele.getIsbn().equals(codice)).findFirst().get();
+        if (listaElementi.contains(eleIsbn)) {
+            System.out.println(eleIsbn);
+        } else {
+            throw new IsbnNotFoundException("Errore: isbn non trovato nell archivio!");
+        }
+
 
     }
-    public void eliminaIsbn(){
+
+    public void eliminaIsbn() {
         System.out.println("Inserisci il codice isbn da eliminare nell archivio:");
         String codice = sn.nextLine();
-        listaElementi.removeIf(ele->ele.getIsbn().equals(codice));
-        System.out.println("elemento " + codice +" eliminato con successo");
+        listaElementi.removeIf(ele -> ele.getIsbn().equals(codice));
+        System.out.println("elemento " + codice + " eliminato con successo");
 
     }
-    public void ricercaAnno(){
+
+    public void ricercaAnno() {
         System.out.println("Inserisci l anno da cercare nell archivio:");
         int anno = sn.nextInt();
         sn.nextLine();
-        List<Elemento> listaAnno = listaElementi.stream().filter(ele->ele.getYear() == anno).toList();
-        listaAnno.forEach(ele-> System.out.println(ele));
+        List<Elemento> listaAnno = listaElementi.stream().filter(ele -> ele.getYear() == anno).toList();
+        listaAnno.forEach(ele -> System.out.println(ele));
     }
 
-    public void ricercaAutore(){
+    public void ricercaAutore() {
         System.out.println("Inserisci il nome dell autore che vuoi cercare: ");
         String nomeAutore = sn.nextLine();
         List<Elemento> listaAutori = listaElementi.stream().filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore)).collect(Collectors.toList());
-        listaAutori.forEach(ele-> System.out.println(ele));
+        listaAutori.forEach(ele -> System.out.println(ele));
     }
-    
-    public void aggiornaElemento(){
+
+    public void aggiornaElemento() {
         System.out.println("inserisci il codice ISBN dell elemento da modificare: ");
         String codice = sn.nextLine();
-        Elemento elemento = listaElementi.stream().filter(ele-> ele.getIsbn().equals(codice)).findFirst().get();
+        Elemento elemento = listaElementi.stream().filter(ele -> ele.getIsbn().equals(codice)).findFirst().get();
         System.out.println("risultati------------------------------------------");
         System.out.println(elemento);
         System.out.println("inserisci il nuovo titolo: ");
@@ -125,7 +135,7 @@ public class Archivio {
         System.out.println("inserisci il nuovo numero di pagine: ");
         int pages = sn.nextInt();
         sn.nextLine();
-        if (elemento instanceof Libro){
+        if (elemento instanceof Libro) {
             System.out.println("inserisci il nuovo autore: ");
             String autore = sn.nextLine();
             System.out.println("inserisci il nuovo genere: ");
@@ -136,29 +146,34 @@ public class Archivio {
             ((Libro) elemento).setAutore(autore);
             ((Libro) elemento).setGenere(genere);
             System.out.println("modifica effettuata correttamente: " + elemento);
-
-        }else if(elemento instanceof Rivista){
+        } else if (elemento instanceof Rivista) {
             System.out.println("inserisci la nuova periodicita(settimanale, mensile, semestrale):");
             String periodicita = sn.nextLine().toUpperCase();
-
             Rivista.Periodicita nuovaPeriodicita;
-            try{
+            try {
                 nuovaPeriodicita = Rivista.Periodicita.valueOf(periodicita);
-            }catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println("errore: valore non accettato");
                 return;
             }
-
             elemento.setTitle(title);
             elemento.setYear(year);
             elemento.setPages(pages);
             ((Rivista) elemento).setPeriodicita(nuovaPeriodicita);
             System.out.println("modifica effettuata correttamente: " + elemento);
-
-
-
         }
+    }
 
+    public void statistiche() {
+        Long totaleLibri = listaElementi.stream().filter(ele -> ele instanceof Libro).count();
+        Long totaleRiviste = listaElementi.stream().filter(ele -> ele instanceof Rivista).count();
+        Elemento pagesMax = listaElementi.stream().max(Comparator.comparing(Elemento::getPages)).get();
+        Double avgPages = listaElementi.stream().mapToDouble(Elemento::getPages).average().getAsDouble();
+
+        System.out.println("il totale dei libri è: " + totaleLibri);
+        System.out.println("il totale delle riviste è: " + totaleRiviste);
+        System.out.println("l elemento con piu pagine è: " + pagesMax);
+        System.out.println("il numero medio di pagine è: " + avgPages);
 
     }
 
