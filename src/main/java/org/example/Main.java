@@ -1,7 +1,8 @@
 package org.example;
 
 import Classes.*;
-
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import java.util.Scanner;
 
 public class Main {
@@ -10,6 +11,7 @@ public class Main {
         Scanner sn = new Scanner(System.in);
         Archivio a1 = new Archivio();
         boolean running = true;
+        final Logger logger = LoggerFactory.getLogger(Main.class);
         System.out.println("Benvenuto, ecco una lista di comandi che puoi utilizzare: ");
         while (running) {
 
@@ -59,10 +61,10 @@ public class Main {
                         running = false;
                         break;
                     default:
-                        System.out.println("Opzione non valida. Inserisci un numero tra 0 e 7.");
+                        logger.error("Opzione non valida. Inserisci un numero tra 0 e 7.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Errore: inserisci solo numeri interi tra 0 e 7.");
+                logger.error("Errore: inserisci solo numeri interi tra 0 e 7.");
             }
         }
     }

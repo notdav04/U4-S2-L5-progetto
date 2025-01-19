@@ -1,6 +1,9 @@
 package Classes;
 
 import org.apache.commons.io.FileUtils;
+import org.example.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class Archivio {
     Scanner sn = new Scanner(System.in);
-    File file = new File("txt/info.txt");
+    File file = new File("txt/info.txt");  //ho creato una gestione che mi tiene traccia di tutte le operazioni eseguite con successo all interno di info.txt.
     private HashSet<String> isbnSet;
-
+    private static final Logger logger = LoggerFactory.getLogger(Archivio.class);
     private List<Elemento> listaElementi = new ArrayList<>();
 
 
@@ -38,7 +41,7 @@ public class Archivio {
         System.out.println("inserisci il codice isbn:");
         String isbn = sn.nextLine();
         if (isbnSet.contains(isbn)) {
-            System.out.println("Errore, nell archivio è gia presente un elemento con questo codice isbn.");
+            logger.error("Errore, nell archivio è gia presente un elemento con questo codice isbn.");
             return;
         }
         System.out.println("Inserisci il titolo:");
@@ -82,7 +85,7 @@ public class Archivio {
             try {
                 periodicita = Rivista.Periodicita.valueOf(periodicitaInput);
             } catch (IllegalArgumentException e) {
-                System.out.println("Errore: periodicità non valida.");
+                logger.error("Errore: periodicità non valida.");
                 return;
             }
 
@@ -98,7 +101,7 @@ public class Archivio {
             System.out.println("Rivista aggiunta correttamente.");
 
         } else {
-            System.out.println("scelta non valida.");
+            logger.error("Errore: scelta non valida.");
         }
     }
 
@@ -191,7 +194,7 @@ public class Archivio {
             try {
                 nuovaPeriodicita = Rivista.Periodicita.valueOf(periodicita);
             } catch (IllegalArgumentException e) {
-                System.out.println("errore: valore non accettato");
+                logger.error("errore: valore non accettato");
                 return;
             }
             elemento.setTitle(title);
