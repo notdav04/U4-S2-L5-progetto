@@ -29,10 +29,11 @@ public class Main {
                     case 1:
                         a1.aggiuntaElemento();
                         break;
+
                     case 2:
                         try {
                             a1.ricercaIsbn();
-                        }catch (IsbnNotFoundException e){
+                        } catch (IsbnNotFoundException e) {
                             System.out.println(e.getMessage());
                         }
                         break;

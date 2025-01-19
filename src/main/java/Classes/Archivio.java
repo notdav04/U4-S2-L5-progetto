@@ -1,10 +1,16 @@
 package Classes;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
 public class Archivio {
     Scanner sn = new Scanner(System.in);
+    File file = new File("txt/info.txt");
     private HashSet<String> isbnSet;
 
     private List<Elemento> listaElementi = new ArrayList<>();
@@ -25,6 +31,7 @@ public class Archivio {
         listaElementi.add(r1);
         listaElementi.add(r2);
 
+
     }
 
     public void aggiuntaElemento() {
@@ -39,6 +46,7 @@ public class Archivio {
 
         System.out.println("Inserisci l'anno di pubblicazione:");
         int year = sn.nextInt();
+        sn.nextLine();
 
         System.out.println("Inserisci il numero di pagine:");
         int pages = sn.nextInt();
@@ -59,6 +67,11 @@ public class Archivio {
             isbnSet.add(isbn);
 
             listaElementi.add(nuovoLibro);
+            try {
+                FileUtils.writeStringToFile(file, "aggiunto elemento " + nuovoLibro.getIsbn() + "\n", true);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println("Libro aggiunto correttamente.");
 
         } else if (scelta == 2) {
@@ -77,6 +90,11 @@ public class Archivio {
             isbnSet.add(isbn);
 
             listaElementi.add(nuovaRivista);
+            try {
+                FileUtils.writeStringToFile(file, "aggiunto elemento " + nuovaRivista.getIsbn() + "\n", true);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
             System.out.println("Rivista aggiunta correttamente.");
 
         } else {
@@ -91,6 +109,11 @@ public class Archivio {
         Elemento eleIsbn = listaElementi.stream().filter(ele -> ele.getIsbn().equals(codice)).findFirst().get();
         if (listaElementi.contains(eleIsbn)) {
             System.out.println(eleIsbn);
+            try {
+                FileUtils.writeStringToFile(file, "cercato elemento " + eleIsbn.getIsbn() + "\n", true);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             throw new IsbnNotFoundException("Errore: isbn non trovato nell archivio!");
         }
@@ -102,6 +125,11 @@ public class Archivio {
         System.out.println("Inserisci il codice isbn da eliminare nell archivio:");
         String codice = sn.nextLine();
         listaElementi.removeIf(ele -> ele.getIsbn().equals(codice));
+        try {
+            FileUtils.writeStringToFile(file, "eliminato elemento " + codice + "\n", true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
         System.out.println("elemento " + codice + " eliminato con successo");
 
     }
@@ -112,6 +140,11 @@ public class Archivio {
         sn.nextLine();
         List<Elemento> listaAnno = listaElementi.stream().filter(ele -> ele.getYear() == anno).toList();
         listaAnno.forEach(ele -> System.out.println(ele));
+        try {
+            FileUtils.writeStringToFile(file, "ricerca anno " + anno + "\n", true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void ricercaAutore() {
@@ -119,6 +152,11 @@ public class Archivio {
         String nomeAutore = sn.nextLine();
         List<Elemento> listaAutori = listaElementi.stream().filter(ele -> ele instanceof Libro && ((Libro) ele).getAutore().equals(nomeAutore)).collect(Collectors.toList());
         listaAutori.forEach(ele -> System.out.println(ele));
+        try {
+            FileUtils.writeStringToFile(file, "ricerca autore " + nomeAutore + "\n", true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void aggiornaElemento() {
@@ -162,6 +200,11 @@ public class Archivio {
             ((Rivista) elemento).setPeriodicita(nuovaPeriodicita);
             System.out.println("modifica effettuata correttamente: " + elemento);
         }
+        try {
+            FileUtils.writeStringToFile(file, "modifica elemento " + codice + "\n", true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void statistiche() {
@@ -174,6 +217,11 @@ public class Archivio {
         System.out.println("il totale delle riviste è: " + totaleRiviste);
         System.out.println("l elemento con piu pagine è: " + pagesMax);
         System.out.println("il numero medio di pagine è: " + avgPages);
+        try {
+            FileUtils.writeStringToFile(file, "stampa statistiche \n", true);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 
